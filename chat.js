@@ -19,7 +19,7 @@ const bot = new Telegraf(process.env.TOKEN);
 
 bot.start((ctx) => {
   ctx.reply(
-    "Hello, this is a bot that uses OpenAI.\nAsk anything using /ask followed by your question, if your directly texting the bot you don't need to use /ask, just ask you>
+    "Halo, Saya adalah SmartBoda .\nAsk apa pun menggunakan /ask diikuti dengan pertanyaan Anda, jika Anda langsung mengirim SMS ke bot Anda tidak perlu menggunakan /ask, ajukan saja pertanyaan Anda."
   );
 });
 
@@ -30,7 +30,8 @@ async function askAI(question, userId) {
         parentMessageId: conversation.messageId,
       })
     : await api.sendMessage(question);
-   console.log(conversation.text);
+
+  console.log(conversation.text);
 
   return conversation.text;
 }
@@ -63,13 +64,15 @@ bot.command("ask", async (ctx) => {
     });
   } catch (error) {
     console.log(error);
-    }
+  }
 });
 
 bot.command("reload", async (ctx) => {
   chat_log.clear();
 
-  if (chat_log.size === 0) {");
+  ctx.sendChatAction("typing");
+
+  if (chat_log.size === 0) {
     return ctx.reply("Conversation history reloaded!", {
       reply_to_message_id: ctx.message.message_id,
     });
@@ -80,5 +83,3 @@ bot.launch();
 
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
-
-
